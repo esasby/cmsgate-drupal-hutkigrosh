@@ -72,7 +72,7 @@ class RegistryHutkigroshDrupal extends RegistryHutkigrosh
     {
         return new ModuleDescriptor(
             "commerce_hutkigrosh", // код должен совпадать с кодом решения в маркете (@id в Plugin\Commerce\PaymentGateway\xxx.php)
-            new VersionDescriptor("2.15.0", "2021-12-23"),
+            new VersionDescriptor("2.15.1", "2022-01-12"),
             "Прием платежей через ЕРИП (сервис Hutkigrosh)",
             "https://bitbucket.org/esasby/cmsgate-drupal-hutkigrosh/src/master/",
             VendorDescriptor::esas(),

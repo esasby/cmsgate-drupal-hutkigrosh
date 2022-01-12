@@ -3,6 +3,7 @@
 use Drupal\commerce_hutkigrosh\Plugin\Commerce\PaymentGateway\Hutkigrosh;
 use Drupal\Core\Url;
 use Drupal\commerce_order\Entity\Order;
+use esas\cmsgate\CmsConnectorDrupal;
 use esas\cmsgate\hutkigrosh\controllers\ControllerHutkigroshCompletionPage;
 use esas\cmsgate\Registry;
 
@@ -31,20 +32,10 @@ function commerce_hutkigrosh_preprocess_commerce_hutkigrosh_checkout_completion_
     $variables['completionPanel'] = $completionPanel;
 }
 
-function getOrderFromCurrentUrl()
-{
-    // не самый красивый способ получения идентификатора заказа
-    $current_path = Url::fromRoute('<current>')->toString();
-    if (!preg_match('/checkout\/(.*)\/complete/', $current_path, $result))
-        throw new Exception('Can not detect order_id');
-    $order = Order::load($result[1]);
-    return $order;
-}
-
 function commerce_hutkigrosh_theme_suggestions_form_alter(array &$suggestions, array $variables)
 {
     if ($variables['element']['#step_id'] == "complete") { // может быть есть какой-то более удачный вариант проверки?
-        $order = getOrderFromCurrentUrl();
+        $order = CmsConnectorDrupal::getInstance()->getDrupalOrderFromSession();
         if ($order->get('payment_gateway')->entity->getPlugin() instanceof Hutkigrosh) {
             $suggestions[] = 'commerce_hutkigrosh_checkout_completion_form';
         }
